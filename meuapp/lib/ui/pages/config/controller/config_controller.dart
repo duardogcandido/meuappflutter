@@ -39,7 +39,7 @@ class ConfigController extends FxController {
 
   @override
   void dispose() {
-    scaleController.dispose();
+    FxControllerStore.delete(this);
     super.dispose();
   }
 

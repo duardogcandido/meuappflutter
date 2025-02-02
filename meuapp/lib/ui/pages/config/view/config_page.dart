@@ -1,26 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meuappflutter/ui/pages/config/controller/config_controller.dart';
 import 'package:meuappflutter/ui/themes/app_theme.dart';
+import 'package:meuappflutter/ui/themes/theme_type.dart';
+import 'package:rive/rive.dart';
 
 class ConfigPage extends StatefulWidget {
-  const ConfigPage({super.key});
+  const ConfigPage({Key? key}) : super(key: key);
 
   @override
   _ConfigPageState createState() => _ConfigPageState();
 }
 
-class _ConfigPageState extends State<ConfigPage>
-    with TickerProviderStateMixin {
+class _ConfigPageState extends State<ConfigPage> with TickerProviderStateMixin {
   late ThemeData theme;
   late ConfigController controller;
+  Artboard? _switchArtboard;
+  SMITrigger? trigger;
+  StateMachineController? stateMachineController;
 
   @override
   void initState() {
     super.initState();
     theme = AppTheme.shoppingTheme;
     controller = FxControllerStore.putOrFind(ConfigController(this));
+    if(AppTheme.themeType == ThemeType.dark){
+      rootBundle.load('assets/animations/rive/mode_switch_dark_init.riv').then(
+            (data) {
+          final file = RiveFile.import(data);
+          final artboard = file.mainArtboard;
+          stateMachineController =
+              StateMachineController.fromArtboard(artboard, "State Machine 1");
+          if (stateMachineController != null) {
+            artboard.addController(stateMachineController!);
+            trigger = stateMachineController!.findSMI('Click');
+            trigger = stateMachineController!.inputs.first as SMITrigger;
+          }
+
+          setState(() => _switchArtboard = artboard);
+        },
+      );
+    }else{
+      rootBundle.load('assets/animations/rive/mode_switch_light_init.riv').then(
+            (data) {
+          final file = RiveFile.import(data);
+          final artboard = file.mainArtboard;
+          stateMachineController =
+              StateMachineController.fromArtboard(artboard, "State Machine 1");
+          if (stateMachineController != null) {
+            artboard.addController(stateMachineController!);
+            trigger = stateMachineController!.findSMI('Click');
+            trigger = stateMachineController!.inputs.first as SMITrigger;
+          }
+
+          setState(() => _switchArtboard = artboard);
+        },
+      );
+    }
+  }
+
+  void switchBright() {
+    controller.scaleController.forward();
+    trigger?.fire();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    FxControllerStore.delete(controller);
+    super.dispose();
   }
 
   @override
@@ -41,30 +91,11 @@ class _ConfigPageState extends State<ConfigPage>
               ),
             ),
             body: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AnimatedBuilder(
-                    animation: controller.scaleAnimation,
-                    builder: (context, child) => Transform.scale(
-                      scale: controller.scaleAnimation.value,
-                      child: FxContainer.rounded(
-                        paddingAll: 1,
-                        child: Container(),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      controller.scaleController.forward();
-                    },
-                    child: const FxContainer.rounded(
-                      child: Icon(
-                        Icons.wb_sunny_sharp,
-                      ),
-                    ),
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () {
+                  switchBright();
+                },
+                child: Rive(artboard: _switchArtboard!),
               ),
             ),
           );
