@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meuappflutter/extensions/string.dart';
 import 'package:meuappflutter/ui/pages/config/controller/config_controller.dart';
 import 'package:meuappflutter/ui/themes/app_theme.dart';
-import 'package:meuappflutter/ui/themes/theme_type.dart';
 import 'package:meuappflutter/ui/widgets/select_language_dialog.dart';
 import 'package:rive/rive.dart';
 
@@ -41,7 +39,6 @@ class _ConfigPageState extends State<ConfigPage> with TickerProviderStateMixin {
         builder: (controller) {
           return _buildBody(context);
         });
-
   }
 
   Widget _buildBody(BuildContext context) {

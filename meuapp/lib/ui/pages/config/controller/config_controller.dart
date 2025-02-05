@@ -10,20 +10,20 @@ import 'package:rive/rive.dart';
 class ConfigController extends FxController {
   TickerProvider ticker;
   Artboard? switchArtboard;
-  SMITrigger? trigger;
   StateMachineController? stateMachineController;
+  late SMIBool trigger;
   late AnimationController scaleController;
   late Animation<double> scaleAnimation;
   bool uiLoading = true,
-       showNotification = true,
-       allowIcon = true,
-       showLock = false,
-       reaction = true,
-       sound = true,
-       pushTip = true,
-       appSound = false,
-       appBanner = true,
-       appTip = false;
+      showNotification = true,
+      allowIcon = true,
+      showLock = false,
+      reaction = true,
+      sound = true,
+      pushTip = true,
+      appSound = false,
+      appBanner = true,
+      appTip = false;
 
   ConfigController(this.ticker);
 
@@ -33,52 +33,50 @@ class ConfigController extends FxController {
     fetchData();
   }
 
-  void fetchData() async{
+  void fetchData() async {
     scaleController =
         AnimationController(vsync: ticker, duration: Duration(seconds: 1));
     scaleAnimation =
-    Tween<double>(begin: 0.0, end: 800.0).animate(scaleController)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          changeTheme();
-          scaleController.reset();
+        Tween<double>(begin: 0.0, end: 800.0).animate(scaleController)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              changeTheme();
+              scaleController.reset();
+            }
+          });
+    rootBundle.load('assets/animations/rive/dark_light_switch.riv').then(
+      (data) {
+        final file = RiveFile.import(data);
+        final artboard = file.mainArtboard;
+        stateMachineController =
+            StateMachineController.fromArtboard(artboard, "State Machine 1");
+        if (stateMachineController != null) {
+          artboard.addController(stateMachineController!);
+          trigger = stateMachineController!.findSMI('isDark');
+          trigger = stateMachineController!.inputs.first as SMIBool;
+          trigger.value = AppTheme.themeType == ThemeType.dark;
         }
-      });
-    if(AppTheme.themeType == ThemeType.dark){
-      rootBundle.load('assets/animations/rive/mode_switch_dark_init.riv').then(
-            (data) {
-          final file = RiveFile.import(data);
-          final artboard = file.mainArtboard;
-          stateMachineController =
-              StateMachineController.fromArtboard(artboard, "State Machine 1");
-          if (stateMachineController != null) {
-            artboard.addController(stateMachineController!);
-            trigger = stateMachineController!.findSMI('Click');
-            trigger = stateMachineController!.inputs.first as SMITrigger;
-          }
-          switchArtboard = artboard;
-          uiLoading = false;
-          update();
-        },
-      );
-    }else{
-      rootBundle.load('assets/animations/rive/mode_switch_light_init.riv').then(
-            (data) {
-          final file = RiveFile.import(data);
-          final artboard = file.mainArtboard;
-          stateMachineController =
-              StateMachineController.fromArtboard(artboard, "State Machine 1");
-          if (stateMachineController != null) {
-            artboard.addController(stateMachineController!);
-            trigger = stateMachineController!.findSMI('Click');
-            trigger = stateMachineController!.inputs.first as SMITrigger;
-          }
-          switchArtboard = artboard;
-          uiLoading = false;
-          update();
-        },
-      );
-    }
+        switchArtboard = artboard;
+        uiLoading = false;
+        update();
+      },
+    );
+    //   rootBundle.load('assets/animations/rive/mode_switch_light_init.riv').then(
+    //         (data) {
+    //       final file = RiveFile.import(data);
+    //       final artboard = file.mainArtboard;
+    //       stateMachineController =
+    //           StateMachineController.fromArtboard(artboard, "State Machine 1");
+    //       if (stateMachineController != null) {
+    //         artboard.addController(stateMachineController!);
+    //         trigger = stateMachineController!.findSMI('Click');
+    //         trigger = stateMachineController!.inputs.first as SMITrigger;
+    //       }
+    //       switchArtboard = artboard;
+    //       uiLoading = false;
+    //       update();
+    //     },
+    //   );
   }
 
   void changeTheme() {
@@ -94,7 +92,7 @@ class ConfigController extends FxController {
 
   void switchBright() {
     scaleController.forward();
-    trigger?.fire();
+    trigger?.value = !trigger!.value;
   }
 
   @override
