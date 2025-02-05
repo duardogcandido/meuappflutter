@@ -60,20 +60,26 @@ class LoginController extends FxController {
     teddyController.lookAt(offset);
   }
 
-  void login() {
+  void login() async{
     if (formKey.currentState!.validate()) {
       // teddyController.coverEyes(false);
       teddyController.setSuccess();
       Info.message("Login success", context: context);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => ConfigPage(),
-        ),
-      );
+      await goToConfig();
     } else {
       teddyController.setFail();
       Info.error("Login failed", context: context);
     }
+  }
+
+  goToConfig() async{
+    await Future.delayed(Duration(seconds: 1)).whenComplete(
+      () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => ConfigPage(),
+        ),
+      ),
+    );
   }
 
   @override

@@ -46,10 +46,11 @@ class AppNotifier extends ChangeNotifier {
   Future<void> changeLanguage(Language language,
       [bool notify = true, bool changeDirection = true]) async {
     if (changeDirection) {
-      if (language.supportRTL)
+      if (language.supportRTL) {
         changeDirectionality(TextDirection.rtl, false);
-      else
+      } else {
         changeDirectionality(TextDirection.ltr, false);
+      }
     }
 
     await Language.changeLanguage(language);

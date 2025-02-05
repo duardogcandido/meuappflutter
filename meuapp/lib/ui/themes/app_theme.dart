@@ -237,7 +237,7 @@ class AppTheme {
     primaryColor: Color(0xff3C4EC5),
 
     /// Scaffold and Background color
-    scaffoldBackgroundColor: Color(0xffffffff),
+    scaffoldBackgroundColor: Color(0xffd9d6d6),
     canvasColor: Colors.transparent,
 
     /// AppBar Theme
@@ -272,8 +272,7 @@ class AppTheme {
     dividerColor: Color(0xffe8e8e8),
 
     /// Bottom AppBar Theme
-    bottomAppBarTheme:
-    BottomAppBarTheme(color: Color(0xffeeeeee), elevation: 2),
+    bottomAppBarTheme: BottomAppBarTheme(color: Color(0xffeeeeee), elevation: 2),
 
     /// Tab bar Theme
     tabBarTheme: TabBarTheme(
@@ -357,7 +356,7 @@ class AppTheme {
     primaryColor: Color(0xff069DEF),
 
     /// Scaffold and Background color
-    scaffoldBackgroundColor: Color(0xff161616),
+    scaffoldBackgroundColor: Color(0xff232121),
     canvasColor: Colors.transparent,
 
     /// AppBar Theme

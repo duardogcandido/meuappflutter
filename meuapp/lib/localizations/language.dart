@@ -10,13 +10,10 @@ class Language {
   final String languageName;
 
   static List<Language> languages = [
+    Language(Locale('pt'), "Português"),
     Language(Locale('en'), "English"),
     Language(Locale('hi'), "Hindi"),
-    Language(
-      Locale('ar'),
-      "Arabic",
-      true,
-    ),
+    Language(Locale('ar'), "Arabic",true,),
     Language(Locale('fr'), "French"),
     Language(Locale('zh'), "Chinese"),
   ];

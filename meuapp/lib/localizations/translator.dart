@@ -15,7 +15,9 @@ class Translator {
         return MapEntry(key, value.toString());
       });
       return true;
-    } catch (e) {}
+    } catch (e) {
+
+    }
     return false;
   }
 
