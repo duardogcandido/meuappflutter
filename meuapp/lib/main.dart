@@ -9,7 +9,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:meuappflutter/localizations/app_localization_delegate.dart';
 import 'package:meuappflutter/localizations/language.dart';
-import 'package:meuappflutter/ui/pages/config/view/config_page.dart';
 import 'package:meuappflutter/ui/pages/login/view/login_page.dart';
 import 'package:meuappflutter/ui/themes/app_notifier.dart';
 import 'package:meuappflutter/ui/themes/app_theme.dart';

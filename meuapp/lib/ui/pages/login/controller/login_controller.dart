@@ -6,7 +6,6 @@ import 'package:meuappflutter/utils/info_controller.dart';
 
 class LoginController extends FxController {
   LoginController();
-
   late TextEditingController emailTE, passwordTE;
   GlobalKey<FormState> formKey = GlobalKey();
   late TeddyController teddyController;
